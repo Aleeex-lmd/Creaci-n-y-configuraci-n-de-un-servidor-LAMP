@@ -1,0 +1,5 @@
+- name: Actualizamos el sistema
+  apt:
+    update_cache: yes
+    upgrade: yes
+
