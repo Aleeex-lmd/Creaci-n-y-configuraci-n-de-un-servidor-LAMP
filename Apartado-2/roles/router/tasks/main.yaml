@@ -1,0 +1,38 @@
+- name: Cambia el bit de forward a 1
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configuracion de DNAT
+  iptables:
+    chain: PREROUTING
+    in_interface: eth2
+    destination_port: 80
+    jump: DNAT
+    protocol: tcp
+    table: nat
+    to_destination: 192.168.200.101:80
+  become: yes
+
+- name: Configuracion de SNAT
+  iptables:
+    chain: POSTROUTING
+    source: 192.168.200.0/24
+    jump: MASQUERADE
+    out_interface: eth1
+    table: nat
+  become: yes
+
+- name: "iptables persistent"
+  apt:
+    pkg:
+      - iptables-persistent
+
+- name: Save current state of the firewall in system file
+  community.general.iptables_state:
+    state: saved
+    path: /etc/sysconfig/iptables
+
