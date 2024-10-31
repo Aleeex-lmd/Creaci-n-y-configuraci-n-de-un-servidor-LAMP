@@ -1,30 +1,55 @@
-- name: "ensure apache2 is installed"
+- name: Instalar Apache
   apt:
-    pkg: apache2
-- name: copy template index 
-  template: 
+    name: apache2
+    state: present
+
+- name: Crear DocumentRoot
+  file:
+    path: "{{ document_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Copiar página estática al DocumentRoot
+  copy:
+    src: index.html
+    dest: "{{ index_file }}"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Copiar página estática al DocumentRoot
+  copy:
+    src: estilo.css
+    dest: "{{ estilo_file }}"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Eliminar configuración por defecto de Apache
+  file:
+    path: /etc/apache2/sites-available/000-default.conf
+    state: absent
+  ignore_errors: yes 
+
+- name: Configurar VirtualHost
+  template:
     src: index.j2
-    dest: /var/www/html/index.html
-    owner: www-data
-    group: www-data
-    mode: 0644
+    dest: "/etc/apache2/sites-available/{{ vhost_name }}.conf"
+  notify: Reiniciar Apache
 
-- name: "Copiar fichero al servidor remoto"
-  copy:
-    src: fichero.html
-    dest: /var/www/html/fichero.html
-    owner: www-data
-    group: www-data
-    mode: '0644'
+- name: Activar el VirtualHost
+  command: a2ensite "{{ vhost_name }}"
+  notify: Reiniciar Apache
 
-- name: "Copiar fichero de configuración y reiniciar el servicio"
-  copy:
-    src: etc/apache2/ports.conf
-    dest: /etc/apache2/ports.conf
-    owner: root
-    group: root
-    mode: '0644'
-  notify:
-    - restart apache2
+- name: Activar el módulo rewrite
+  command: a2enmod rewrite
+  notify: Reiniciar Apache
 
+- name: Actualizar /etc/hosts para resolución estática
+  lineinfile:
+    path: /etc/hosts
+    line: "192.168.200.102 {{ vhost_name }}"  
+    state: present
 

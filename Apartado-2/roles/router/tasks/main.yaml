@@ -9,13 +9,14 @@
 - name: Configuracion de DNAT
   iptables:
     chain: PREROUTING
-    in_interface: eth2
+    in_interface: eth1
     destination_port: 80
     jump: DNAT
     protocol: tcp
     table: nat
-    to_destination: 192.168.200.101:80
+    to_destination: 192.168.200.102:80
   become: yes
+
 
 - name: Configuracion de SNAT
   iptables:
@@ -31,8 +32,9 @@
     pkg:
       - iptables-persistent
 
-- name: Save current state of the firewall in system file
+- name: Guardar el estado actual del firewall en el archivo del sistema
   community.general.iptables_state:
     state: saved
     path: /etc/sysconfig/iptables
+  notify: Reiniciar iptables
 

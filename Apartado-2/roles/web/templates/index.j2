@@ -1,17 +1,12 @@
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Prueba Ansible</title> 
-</head>
+<VirtualHost *:80>
+    ServerName {{ vhost_name }}
+    DocumentRoot {{ document_root }}
 
-<body>
-   <h1>Gathering Facts</h1>
-  <p>Este ordenador se llama: {{ ansible_hostname }}</p>
-  <p>SO: {{ansible_distribution}} {{ansible_distribution_release}} </p>
-  <h1>Variables declaradas por el usuario a nivel de grupo</h1>
-  <p>Nombre de la bd: {{bd_name}}</p>
-  <p>Usuario de la bd: {{bd_user}}</p>
-  <h1>Variables declaradas por el usuario a nivel de nodo</h1>
-  <p>IP: {{ansible_ssh_host}}</p>
-</body>
-</html> 
+    <Directory {{ document_root }}>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/{{ vhost_name }}-error.log
+    CustomLog ${APACHE_LOG_DIR}/{{ vhost_name }}-access.log combined
+</VirtualHost>

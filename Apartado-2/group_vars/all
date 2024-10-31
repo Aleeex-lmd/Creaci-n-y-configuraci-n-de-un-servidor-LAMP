@@ -1,2 +1,17 @@
 usuario: vagrant
 
+# web
+document_root: /var/www/html/notkod
+vhost_name: alejandro.notkod.es
+index_file: "{{ document_root }}/index.html"
+estilo_file: "{{ document_root }}/estilo.css"
+bd_host_name: bd-alejandro.notkod.es
+
+# Wordpress
+wordpress_db: wordpress
+wordpress_db_user: wordpress_user
+wordpress_db_password: wordpress_pass  # Cambia por una contraseña segura
+wordpress_admin_user: admin
+wordpress_admin_password: admin_pass # Cambia por una contraseña segura
+wordpress_admin_email: admin@example.com
+wp_document_root: /var/www/html/wordpress

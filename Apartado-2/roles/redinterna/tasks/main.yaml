@@ -1,0 +1,18 @@
+- name: Comprobar la ruta por defecto actual
+  command: ip route show default
+  register: current_route
+  ignore_errors: true
+
+- name: Cambiar la ruta por defecto solo si es necesario
+  shell: |
+    ip route delete default
+    ip route add default via 192.168.200.100
+  when: current_route.stdout.find('default') != -1 and current_route.stdout.find('192.168.200.100') == -1
+  become: true
+
+# - name: Asegurarse de que la entrada está presente en /etc/network/interfaces
+#   lineinfile:
+#     path: /etc/network/interfaces
+#     line: "post-up route add -net 192.168.200.0 netmask 255.255.255.0 gw 192.168.200.0 dev eth1"
+#     state: present
+#   become: true

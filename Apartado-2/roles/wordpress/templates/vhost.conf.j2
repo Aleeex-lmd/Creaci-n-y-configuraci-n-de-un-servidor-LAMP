@@ -1,0 +1,23 @@
+<VirtualHost *:80>
+    ServerName alejandro.notkod.es
+    ServerAlias www.alejandro.notkod.es
+    DocumentRoot /var/www/html/wordpress
+
+    <Directory /var/www/html/wordpress>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/alejandro.notkod.es-error.log
+    CustomLog ${APACHE_LOG_DIR}/alejandro.notkod.es-access.log combined
+
+    # Configuración adicional opcional
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteRule ^index\.php$ - [L]
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule . /index.php [L]
+    </IfModule>
+</VirtualHost>

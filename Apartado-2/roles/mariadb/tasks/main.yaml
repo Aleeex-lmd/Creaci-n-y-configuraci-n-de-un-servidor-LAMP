@@ -1,18 +1,37 @@
-- name: ensure mariadb is installed
+- name: Asegurarse de que MariaDB esté instalado
   apt:
     pkg:
       - mariadb-server
       - python3-mysqldb
+    state: present
 
-- name: create database wordpress
-  mysql_db: name={{bd_name}} state=present
+- name: Crear base de datos para WordPress
+  mysql_db:
+    name: "{{ wordpress_db }}"
+    state: present
 
-- name: create user mysql wordpress
-  mysql_user: name={{bd_user}} host={{ item }} password={{bd_pass}} priv={{bd_name}}.*:ALL,GRANT
-  with_items:
-    - localhost
+- name: Crear usuario de base de datos para WordPress
+  mysql_user:
+    name: "{{ wordpress_db_user }}"
+    password: "{{ wordpress_db_password }}"
+    priv: "{{ wordpress_db }}.*:ALL"
+    state: present
 
-- name: mariadb listen in all interfaces
-  lineinfile: dest=/etc/mysql/mariadb.conf.d/50-server.cnf regexp="^bind-address            = 127.0.0.1" line="bind-address            = 0.0.0.0" state=present
+- name: Conceder permisos a {{ wordpress_db_user }} en la base de datos {{ wordpress_db }}
+  community.mysql.mysql_user:
+    name: "{{ wordpress_db_user }}"
+    host: "192.168.200.%"
+    password: "{{ wordpress_db_password }}"
+    priv: "{{ wordpress_db }}.*:ALL"
+    state: present
+
+- name: Permitir que MariaDB escuche en todas las interfaces
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: "^bind-address            = 127.0.0.1"
+    line: "bind-address            = 0.0.0.0"
+    state: present
   notify:
     - restart mariadb
+
+

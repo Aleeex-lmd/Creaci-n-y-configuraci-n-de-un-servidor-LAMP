@@ -8,24 +8,28 @@
   roles:
     - role: router 
 
-#  -hosts: san web bd
+# - hosts: san web bd
 #   become: true
 #   roles:
 #     - role: redinterna
+
+# - hosts: web
+#   become: true
+#   roles:
+#     - role: web
 
 # - hosts: san
 #   become: true
 #   roles:
 #     - role: sab
 
-# - hosts: bd
-#   become: true
-#   roles:
-#     - role: mariadb
+- hosts: bd
+  become: true
+  roles:
+    - role: mariadb
 
-#  - hosts: web
-#   become: true
-#   roles:
-#       role: web
-
+- hosts: web
+  become: true
+  roles:
+    - role: wordpress
 

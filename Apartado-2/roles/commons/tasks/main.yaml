@@ -3,9 +3,8 @@
     update_cache: yes
     upgrade: yes
 
-
-# - name: Copiar clave pública en cada nodo
-#   authorized_key:
-#     user: "{{ usuario }}" 
-#     state: present
-#     key: "{{ lookup('file', '/home/alex/id_rsa.pub') }}"
+- name: Copiar clave pública en cada nodo
+  authorized_key:
+    user: "{{ usuario }}" 
+    state: present
+    key: "{{ lookup('file', '/home/alex/.ssh/id_rsa.pub') }}"
