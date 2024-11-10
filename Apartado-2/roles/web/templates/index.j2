@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-    ServerName {{ vhost_name }}
+    ServerName {{ web_vhost_name }}
     DocumentRoot {{ document_root }}
 
     <Directory {{ document_root }}>
@@ -7,6 +7,6 @@
         Require all granted
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/{{ vhost_name }}-error.log
-    CustomLog ${APACHE_LOG_DIR}/{{ vhost_name }}-access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/{{ web_vhost_name }}-error.log
+    CustomLog ${APACHE_LOG_DIR}/{{ web_vhost_name }}-access.log combined
 </VirtualHost>

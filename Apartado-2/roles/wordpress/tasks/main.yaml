@@ -12,11 +12,6 @@
     state: present
     update_cache: yes
 
-- name: Instalar Firefox
-  apt:
-    name: firefox-esr
-    state: present
-
 - name: Descargar WordPress
   get_url:
     url: https://wordpress.org/latest.tar.gz
@@ -49,14 +44,14 @@
 - name: Configurar VirtualHost
   template:
     src: vhost.conf.j2  # Ruta a tu archivo de plantilla
-    dest: "/etc/apache2/sites-available/{{ vhost_name }}.conf"
+    dest: "/etc/apache2/sites-available/wp.{{ vhost_name }}.conf"
   notify: Reiniciar Apache
 
 - name: Configurar permisos
   command: chown -R www-data:www-data {{ wp_document_root }}
 
 - name: Activar el VirtualHost
-  command: a2ensite "{{ vhost_name }}"
+  command: a2ensite "wp.{{ vhost_name }}"
   notify: Reiniciar Apache
 
 - name: Descargar WP-CLI
@@ -77,5 +72,4 @@
     --admin_email="{{ wordpress_admin_email }}" --path="{{ wp_document_root }}" --allow-root
   args:
     chdir: "{{ wp_document_root }}"
-
 

@@ -36,20 +36,16 @@
 - name: Configurar VirtualHost
   template:
     src: index.j2
-    dest: "/etc/apache2/sites-available/{{ vhost_name }}.conf"
+    dest: "/etc/apache2/sites-available/{{ web_vhost_name }}.conf"
   notify: Reiniciar Apache
 
 - name: Activar el VirtualHost
-  command: a2ensite "{{ vhost_name }}"
+  command: a2ensite "{{ web_vhost_name }}"
   notify: Reiniciar Apache
 
 - name: Activar el módulo rewrite
   command: a2enmod rewrite
   notify: Reiniciar Apache
 
-- name: Actualizar /etc/hosts para resolución estática
-  lineinfile:
-    path: /etc/hosts
-    line: "192.168.200.102 {{ vhost_name }}"  
-    state: present
+
 

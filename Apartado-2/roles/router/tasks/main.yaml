@@ -6,26 +6,23 @@
     state: present
     reload: yes
 
-- name: Configuracion de DNAT
+- name: Configuración de DNAT
   iptables:
     chain: PREROUTING
-    in_interface: eth1
+    in_interface: "{{ interfaz_router }}"  # Interfaz pública en el router
     destination_port: 80
     jump: DNAT
     protocol: tcp
     table: nat
-    to_destination: 192.168.200.102:80
-  become: yes
+    to_destination: "{{ ip_servidor_web }}:80"  # IP y puerto de la máquina web
 
-
-- name: Configuracion de SNAT
+- name: Configurar SNAT para permitir salida a Internet desde red_intra
   iptables:
     chain: POSTROUTING
-    source: 192.168.200.0/24
+    source: "{{ red_interna }}"             # Rango de IP de la red interna red_intra
     jump: MASQUERADE
-    out_interface: eth1
+    out_interface: "{{ interfaz_router }}"      # Interfaz conectada a Internet
     table: nat
-  become: yes
 
 - name: "iptables persistent"
   apt:

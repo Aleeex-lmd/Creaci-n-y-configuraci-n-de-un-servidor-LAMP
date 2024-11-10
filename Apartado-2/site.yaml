@@ -8,20 +8,15 @@
   roles:
     - role: router 
 
-# - hosts: san web bd
-#   become: true
-#   roles:
-#     - role: redinterna
+- hosts: san web bd
+  become: true
+  roles:
+    - role: redinterna
 
-# - hosts: web
-#   become: true
-#   roles:
-#     - role: web
-
-# - hosts: san
-#   become: true
-#   roles:
-#     - role: sab
+- hosts: web
+  become: true
+  roles:
+    - role: web
 
 - hosts: bd
   become: true
