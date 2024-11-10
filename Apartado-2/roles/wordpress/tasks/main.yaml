@@ -8,7 +8,6 @@
       - php-curl
       - php-mbstring
       - wget
-
     state: present
     update_cache: yes
 
@@ -43,22 +42,26 @@
 
 - name: Configurar VirtualHost
   template:
-    src: vhost.conf.j2  # Ruta a tu archivo de plantilla
-    dest: "/etc/apache2/sites-available/wp.{{ vhost_name }}.conf"
+    src: vhost.conf.j2
+    dest: "/etc/apache2/sites-available/wp.{{ wp_vhost_name }}.conf"
   notify: Reiniciar Apache
 
 - name: Configurar permisos
-  command: chown -R www-data:www-data {{ wp_document_root }}
+  file:
+    path: "{{ wp_document_root }}"
+    owner: www-data
+    group: www-data
+    recurse: yes
 
 - name: Activar el VirtualHost
-  command: a2ensite "wp.{{ vhost_name }}"
+  command: a2ensite "wp.{{ wp_vhost_name }}.conf"
   notify: Reiniciar Apache
 
 - name: Descargar WP-CLI
   get_url:
     url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     dest: /usr/local/bin/wp
-    mode: '0755'  # Hacerlo ejecutable
+    mode: '0755'
 
 - name: Verificar instalación de WP-CLI
   command: wp --info
@@ -67,7 +70,7 @@
 
 - name: Configurar WordPress
   command: >
-    wp core install --url="{{ ansible_hostname }}" --title="My WordPress Site"
+    wp core install --url="http://{{ ansible_hostname }}" --title="My WordPress Site"
     --admin_user="{{ wordpress_admin_user }}" --admin_password="{{ wordpress_admin_password }}"
     --admin_email="{{ wordpress_admin_email }}" --path="{{ wp_document_root }}" --allow-root
   args:

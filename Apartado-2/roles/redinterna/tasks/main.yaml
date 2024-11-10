@@ -6,8 +6,8 @@
 - name: Cambiar la ruta por defecto solo si es necesario
   shell: |
     ip route delete default
-    ip route add default via "{{ red_interna_sin_mascara }}"
-  when: current_route.stdout.find('default') != -1 and current_route.stdout.find("{{ ip_router }}") == -1
+    ip route add default via "{{ ip_router }}"
+  when: "'default' in current_route.stdout and ip_router not in current_route.stdout"
   become: true
 
 - name: Asegurarse de que la entrada está presente en /etc/network/interfaces

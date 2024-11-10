@@ -8,7 +8,7 @@
   roles:
     - role: router 
 
-- hosts: san web bd
+- hosts: san web bd cliente
   become: true
   roles:
     - role: redinterna

@@ -47,5 +47,14 @@
   command: a2enmod rewrite
   notify: Reiniciar Apache
 
+- name: Añadir entrada al archivo /etc/hosts para la IP de la base de datos
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ bd_ip }} {{ bd_host_name }}"
+    create: yes
 
-
+- name: Instalar cliente MariaDB (MySQL)
+  apt:
+    name: mariadb-client
+    state: present
+    update_cache: yes

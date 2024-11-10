@@ -1,7 +1,7 @@
 usuario: vagrant
 
 # router
-interfaz_router: eth1                   r
+interfaz_router: eth1                   
 ip_servidor_web: 192.168.200.102                 
 red_interna: 192.168.200.0/24             
 
@@ -12,10 +12,11 @@ mascara: 255.255.255.0
 
 # web
 document_root: /var/www/html/notkod
+bd_ip: 192.168.200.101
 web_vhost_name: web.alejandro.notkod.es
 index_file: "{{ document_root }}/index.html"
 estilo_file: "{{ document_root }}/estilo.css"
-bd_host_name: bd-alejandro.notkod.es
+bd_host_name: bd.alejandro.notkod.es
 
 # Wordpress
 wordpress_db: wordpress
@@ -25,4 +26,4 @@ wordpress_admin_user: admin
 wordpress_admin_password: admin_pass # Cambia por una contraseña segura
 wordpress_admin_email: admin@example.com
 wp_document_root: /var/www/html/wordpress
-wp_vhost_name: web.alejandro.notkod.es
+wp_vhost_name: wp.alejandro.notkod.es

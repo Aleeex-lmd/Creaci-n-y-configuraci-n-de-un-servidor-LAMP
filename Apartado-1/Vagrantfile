@@ -67,7 +67,24 @@ Vagrant.configure("2") do |config|
         web.vm.synced_folder ".", "/vagrant", disabled: true
     
     end
-  
+
+    # Máquina cliente
+    config.vm.define :cliente do |cliente|
+        cliente.vm.box = "debian/bookworm64"
+        cliente.vm.hostname = "cliente"
+      
+        # Conectar a 'red_intra'
+        cliente.vm.network  :private_network,
+                        :libvirt__network_name => "red-intra",
+                        :libvirt__dhcp_enabled => false,
+                        :ip => "192.168.200.104",
+                        :libvirt__forward_mode => "veryisolated"
+
+        cliente.vm.synced_folder ".", "/vagrant", disabled: true
+    
+    end
+
+
     # Máquina SAN
     config.vm.define :san do |san|
         san.vm.box = "debian/bookworm64"
