@@ -3,29 +3,29 @@ all:
     routers:
       hosts:
         router:
-          ansible_ssh_host: 192.168.121.76
+          ansible_ssh_host: 192.168.121.233
           ansible_ssh_user: vagrant
           ansible_ssh_private_key_file: /home/alex/GitHub/Creacion-y-configuracion-de-un-servidor-LAMP/Apartado-1/.vagrant/machines/router/libvirt/private_key
 
     red-interna:
       hosts:
         web:
-          ansible_ssh_host: 192.168.121.183
+          ansible_ssh_host: 192.168.121.126
           ansible_ssh_user: vagrant
           ansible_ssh_private_key_file: /home/alex/GitHub/Creacion-y-configuracion-de-un-servidor-LAMP/Apartado-1/.vagrant/machines/web/libvirt/private_key
 
         san:
-          ansible_ssh_host: 192.168.121.233
+          ansible_ssh_host: 192.168.121.227
           ansible_ssh_user: vagrant
           ansible_ssh_private_key_file: /home/alex/GitHub/Creacion-y-configuracion-de-un-servidor-LAMP/Apartado-1/.vagrant/machines/san/libvirt/private_key
 
         bd:
-          ansible_ssh_host: 192.168.121.61
+          ansible_ssh_host: 192.168.121.212
           ansible_ssh_user: vagrant
           ansible_ssh_private_key_file: /home/alex/GitHub/Creacion-y-configuracion-de-un-servidor-LAMP/Apartado-1/.vagrant/machines/bd/libvirt/private_key
         
         cliente:
-          ansible_ssh_host: 192.168.121.65
+          ansible_ssh_host: 192.168.121.30
           ansible_ssh_user: vagrant
           ansible_ssh_private_key_file: /home/alex/GitHub/Creacion-y-configuracion-de-un-servidor-LAMP/Apartado-1/.vagrant/machines/cliente/libvirt/private_key
 
